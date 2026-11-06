@@ -9,6 +9,13 @@ use Illuminate\View\View;
 
 class AdminKeuanganController extends Controller
 {
+    public function deleteIndex(): View
+    {
+        return view('admin.keuangan.delete', [
+            'transaksi' => LaporanKeuangan::with(['pembayaran.user.kamar'])->latest('tanggal')->get(),
+        ]);
+    }
+
     public function index(Request $request): View
     {
         $jenis = $request->query('jenis', 'pemasukan');

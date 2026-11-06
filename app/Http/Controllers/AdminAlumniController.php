@@ -21,6 +21,13 @@ class AdminAlumniController extends Controller
         return view('admin.alumni.show', compact('alumni'));
     }
 
+    public function destroy(Alumni $alumni): RedirectResponse
+    {
+        $alumni->delete();
+
+        return to_route('admin.alumni.index')->with('success', 'Data alumni berhasil dihapus.');
+    }
+
     public function updateTestimonial(Request $request, Alumni $alumni): RedirectResponse
     {
         $data = $request->validate([

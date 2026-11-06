@@ -14,8 +14,9 @@
         .brand img { width: 29px; height: 29px; border-radius: 50%; object-fit: cover; }
         .crumb { color: var(--muted); font-weight: 400; }
         .actions { display: flex; gap: 10px; }
-        .button { padding: 11px 15px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 800; }
-        .button.yellow { border: 0; background: var(--yellow); }
+         .button { padding: 11px 15px; border: 1px solid var(--line); border-radius: 8px; background: #fff; font-size: 13px; font-weight: 800; }
+         .button.yellow { border: 0; background: var(--yellow); }
+         .delete-button { padding: 8px 11px; border: 1px solid #ffc8c8; border-radius: 7px; color: #b42318; background: #fff5f5; font-size: 11px; font-weight: 800; cursor: pointer; }
         main { max-width: 1500px; margin: auto; padding: 32px 28px 60px; }
         h1 { margin: 0; font-size: 26px; letter-spacing: -.04em; }
         .subtitle { margin: 7px 0 24px; color: var(--muted); font-size: 14px; }
@@ -50,14 +51,15 @@
     </header>
     <main>
         <h1>Kelola Alumni</h1>
-        <p class="subtitle">Data penghuni yang sudah selesai tinggal dan otomatis dipindahkan dari data aktif.</p>
-        <section class="panel">
+         <p class="subtitle">Data penghuni yang sudah selesai tinggal dan otomatis dipindahkan dari data aktif.</p>
+         @if (session('success')) <div class="notice">{{ session('success') }}</div> @endif
+         <section class="panel">
             <div class="panel-head"><strong>Daftar Alumni ({{ $alumnis->total() }})</strong><input class="search" id="search" placeholder="Cari nama, kampus..."></div>
-            <div class="table-wrap"><table><thead><tr><th>Nama Alumni</th><th>NIK</th><th>Institusi Pendidikan</th><th>Semester Terakhir</th><th>Kamar Terakhir</th><th>Tanggal Keluar</th><th>Alasan Keluar</th><th>Dipindahkan Pada</th></tr></thead><tbody>
+            <div class="table-wrap"><table><thead><tr><th>Nama Alumni</th><th>NIK</th><th>Institusi Pendidikan</th><th>Semester Terakhir</th><th>Kamar Terakhir</th><th>Tanggal Keluar</th><th>Alasan Keluar</th><th>Dipindahkan Pada</th><th>Aksi</th></tr></thead><tbody>
                 @forelse ($alumnis as $alumni)
-                    <tr data-search="{{ strtolower($alumni->name.' '.$alumni->email.' '.$alumni->institusi_pendidikan) }}"><td><strong>{{ $alumni->name }}</strong><small>{{ $alumni->email }}</small><a class="detail-link" href="{{ route('admin.alumni.show', $alumni) }}">Lihat Detail →</a></td><td>{{ $alumni->nik ?? '-' }}</td><td>{{ $alumni->institusi_pendidikan ?? '-' }}</td><td><span class="badge">SEMESTER {{ $alumni->semester ?? '-' }}</span></td><td>{{ $alumni->nomor_kamar ? 'Kamar '.$alumni->nomor_kamar : '-' }}</td><td>{{ $alumni->tanggal_keluar?->format('d M Y') ?: '-' }}</td><td>{{ $alumni->alasan_keluar ?: '-' }}</td><td>{{ $alumni->bergabung_sebagai_alumni_pada?->format('d M Y') }}</td></tr>
+                    <tr data-search="{{ strtolower($alumni->name.' '.$alumni->email.' '.$alumni->institusi_pendidikan) }}"><td><strong>{{ $alumni->name }}</strong><small>{{ $alumni->email }}</small><a class="detail-link" href="{{ route('admin.alumni.show', $alumni) }}">Lihat Detail →</a></td><td>{{ $alumni->nik ?? '-' }}</td><td>{{ $alumni->institusi_pendidikan ?? '-' }}</td><td><span class="badge">SEMESTER {{ $alumni->semester ?? '-' }}</span></td><td>{{ $alumni->nomor_kamar ? 'Kamar '.$alumni->nomor_kamar : '-' }}</td><td>{{ $alumni->tanggal_keluar?->format('d M Y') ?: '-' }}</td><td>{{ $alumni->alasan_keluar ?: '-' }}</td><td>{{ $alumni->bergabung_sebagai_alumni_pada?->format('d M Y') }}</td><td><form method="POST" action="{{ route('admin.alumni.destroy', $alumni) }}" onsubmit="return confirm('Hapus data alumni ini? Data tidak dapat dipulihkan.')">@csrf @method('DELETE')<button class="delete-button" type="submit">Hapus</button></form></td></tr>
                 @empty
-                    <tr><td class="empty" colspan="8">Belum ada alumni. Penghuni yang dihapus akan muncul di sini.</td></tr>
+                    <tr><td class="empty" colspan="9">Belum ada alumni. Penghuni yang dihapus akan muncul di sini.</td></tr>
                 @endforelse
             </tbody></table></div>
             @if ($alumnis->hasPages()) <div class="pagination">{{ $alumnis->links() }}</div> @endif

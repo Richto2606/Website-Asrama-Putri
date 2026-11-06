@@ -63,8 +63,9 @@ Route::middleware(['auth', 'idle', 'role:admin,superadmin,bendahara,sekretaris']
       Route::get('/pendaftaran/export/pdf', [AdminController::class, 'exportPendaftaranPdf'])->name('pendaftaran.export.pdf');
       Route::get('/pembayaran/export', [AdminController::class, 'exportPembayaran'])->name('pembayaran.export');
      Route::get('/alumni', [AdminAlumniController::class, 'index'])->name('alumni.index');
-      Route::get('/alumni/{alumni}', [AdminAlumniController::class, 'show'])->name('alumni.show');
-      Route::patch('/alumni/{alumni}/testimoni', [AdminAlumniController::class, 'updateTestimonial'])->name('alumni.testimonial.update');
+       Route::get('/alumni/{alumni}', [AdminAlumniController::class, 'show'])->name('alumni.show');
+       Route::delete('/alumni/{alumni}', [AdminAlumniController::class, 'destroy'])->name('alumni.destroy');
+       Route::patch('/alumni/{alumni}/testimoni', [AdminAlumniController::class, 'updateTestimonial'])->name('alumni.testimonial.update');
      Route::get('/laporan', [AdminController::class, 'laporan'])->name('laporan');
      Route::get('/laporan/penghuni-kamar', [AdminController::class, 'laporanHunian'])->name('laporan.hunian');
      Route::get('/laporan/penghuni-kamar/pdf', [AdminController::class, 'exportHunianPdf'])->name('laporan.hunian.pdf');
@@ -74,8 +75,9 @@ Route::middleware(['auth', 'idle', 'role:admin,superadmin,bendahara,sekretaris']
     Route::delete('/laporan-kerusakan/{laporanKerusakan}', [AdminLaporanKerusakanController::class, 'destroy'])->name('kerusakan.destroy');
     Route::get('/laporan/export/pdf', [AdminController::class, 'exportLaporanPdf'])->name('laporan.export.pdf');
     Route::get('/laporan/export/excel', [AdminController::class, 'exportLaporan'])->name('laporan.export.excel');
-    Route::get('/keuangan', [AdminKeuanganController::class, 'index'])->name('keuangan.index');
-    Route::post('/keuangan', [AdminKeuanganController::class, 'store'])->name('keuangan.store');
+     Route::get('/keuangan', [AdminKeuanganController::class, 'index'])->name('keuangan.index');
+     Route::get('/keuangan/hapus', [AdminKeuanganController::class, 'deleteIndex'])->name('keuangan.delete.index');
+     Route::post('/keuangan', [AdminKeuanganController::class, 'store'])->name('keuangan.store');
     Route::delete('/keuangan/{laporanKeuangan}', [AdminKeuanganController::class, 'destroy'])->name('keuangan.destroy');
       Route::get('/pengaturan', [AdminContentController::class, 'index'])->middleware('role:admin,superadmin')->name('pengaturan.index');
       Route::post('/pengaturan', [AdminContentController::class, 'settings'])->middleware('role:admin,superadmin')->name('pengaturan.settings');

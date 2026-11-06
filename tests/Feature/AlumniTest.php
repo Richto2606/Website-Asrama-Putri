@@ -14,6 +14,17 @@ class AlumniTest extends TestCase
 {
     use RefreshDatabase;
 
+    public function test_admin_can_delete_alumni(): void
+    {
+        $admin = User::factory()->create(['role' => 'admin']);
+        $alumni = Alumni::create(['name' => 'Siti Alumni', 'email' => 'siti@example.com']);
+
+        $response = $this->actingAs($admin)->delete(route('admin.alumni.destroy', $alumni));
+
+        $response->assertRedirect(route('admin.alumni.index'));
+        $this->assertDatabaseMissing('alumni', ['id' => $alumni->id]);
+    }
+
     public function test_deleting_resident_moves_snapshot_to_alumni(): void
     {
         $admin = User::factory()->create(['role' => 'admin']);
